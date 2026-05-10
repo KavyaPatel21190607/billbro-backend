@@ -58,6 +58,13 @@ app.use(errorHandler);
 
 async function start() {
   await connectDB();
+  try {
+    const Bill = require('./models/Bill');
+    await Bill.collection.dropIndex('invoiceNumber_1');
+    await Bill.syncIndexes();
+  } catch (e) {
+    // Ignore if index doesn't exist
+  }
   const port = Number(process.env.PORT || 5000);
   app.listen(port, () => {
     console.log(`BillBro API running on port ${port}`);

@@ -19,7 +19,7 @@ const billItemSchema = new mongoose.Schema(
 
 const billSchema = new mongoose.Schema(
   {
-    invoiceNumber: { type: String, required: true, unique: true },
+    invoiceNumber: { type: String, required: true },
     customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Buyer', required: true },
     customerSnapshot: {
       name: { type: String, required: true },
@@ -43,5 +43,6 @@ const billSchema = new mongoose.Schema(
 );
 
 billSchema.index({ createdBy: 1, createdAt: -1 });
+billSchema.index({ createdBy: 1, invoiceNumber: 1 }, { unique: true });
 
 module.exports = mongoose.model('Bill', billSchema);
